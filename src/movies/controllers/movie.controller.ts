@@ -1,14 +1,27 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { MovieService } from '../services/movie.service';
-import { MovieSearchDto } from '../dtos/movie-search.dto';
+import { FindMovieDto } from '../dtos/movie.dto';
 
+@ApiTags('OMDb Movies')
 @Controller('movies')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  @Get('search')
-  async search(@Query() query: MovieSearchDto) {
-    const results = await this.movieService.searchMovies(query.q);
+  @Get('')
+  @ApiOperation({ summary: 'Find Movie with Keyword' })
+  async find(@Query() query: FindMovieDto) {
+    const results = await this.movieService.findMovie(query.keyword);
+    return {
+      status: 'success',
+      data: results,
+    };
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get Movie Detail by ID' })
+  async detail(@Param('id') id: string) {
+    const results = await this.movieService.getMovieDetail(id);
     return {
       status: 'success',
       data: results,
