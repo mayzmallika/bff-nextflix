@@ -12,7 +12,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('bff-nextflix', app, document); // http://localhost:3001/bff-nextflix
+  SwaggerModule.setup('swagger', app, document); // http://localhost:3001/swagger
 
   await app.listen(3001);
 }
